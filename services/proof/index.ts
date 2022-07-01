@@ -17,15 +17,12 @@ export async function generateProof(
   inputs: ProofInput
 ): Promise<SolidityProofInput> {
   console.log("inputs", inputs);
-  console.log(
-    "serverPath",
-    serverPath(`/public/CheckTokenAllocations_15.wasm`)
-  );
+  console.log("serverPath", serverPath(`/public${wasmPath}`));
 
   const { proof, publicSignals } = await snarkjs.groth16.fullProve(
     inputs,
-    `../../public${wasmPath}`,
-    `../../public${zkeyPath}`
+    serverPath(`/public${wasmPath}`),
+    serverPath(`/public${zkeyPath}`)
   );
 
   console.log("proof", proof, "publicSignals", publicSignals);
