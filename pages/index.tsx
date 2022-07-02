@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { Container } from "@mui/material";
+import { Container, Tab, Tabs } from "@mui/material";
 import { providers } from "ethers";
 import EpochListings from "../components/EpochListings";
 import AdminFunctions from "../components/AdminFunctions";
 import Header from "../components/Header";
 
 function LoggedInComponent(connectedWalletAddress: string) {
+  const [selectedTab, setSelectedTab] = useState(0);
+
   return (
     <Container>
-      <AdminFunctions connectedWalletAddress={connectedWalletAddress} />
-      <EpochListings connectedWalletAddress={connectedWalletAddress} />
+      <Tabs
+        value={selectedTab}
+        onChange={(_, newValue) => setSelectedTab(newValue)}
+      >
+        <Tab label="Admin View" />
+        <Tab label="Member View" />
+      </Tabs>
+      {selectedTab === 0 ? (
+        <AdminFunctions connectedWalletAddress={connectedWalletAddress} />
+      ) : (
+        <EpochListings connectedWalletAddress={connectedWalletAddress} />
+      )}
     </Container>
   );
 }

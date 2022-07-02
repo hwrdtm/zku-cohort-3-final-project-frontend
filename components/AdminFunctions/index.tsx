@@ -177,16 +177,13 @@ export default function AdminFunctions({
   connectedWalletAddress: string;
 }) {
   return (
-    <Container>
-      <Container>
-        <h1>Admin Functions</h1>
-      </Container>
+    <div>
       <ScheduleNewEpochFunction />
       <ViewEpochDetailsFunction
         connectedWalletAddress={connectedWalletAddress}
       />
       <RevealEpochFunction />
       <CollectRewardFunction />
-    </Container>
+    </div>
   );
 }

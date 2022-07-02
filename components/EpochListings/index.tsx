@@ -7,6 +7,7 @@ import { fetchEpoch } from "services/epochManager";
 import EpochDetails from "components/EpochDetails";
 import { isAddressAdminOfEpoch, isAddressMemberOfEpoch } from "utils/epoch";
 import config, { getContractAddress } from "config";
+import styles from "./index.module.css";
 
 export default function EpochListings({
   connectedWalletAddress,
@@ -14,6 +15,7 @@ export default function EpochListings({
   connectedWalletAddress: string;
 }) {
   const [relevantEpochs, setRelevantEpochs] = useState<Epoch[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const provider = new providers.JsonRpcProvider(config.browserNodeUrl);
@@ -22,6 +24,8 @@ export default function EpochListings({
       EpochManager.abi,
       provider
     );
+
+    setIsLoading(true);
 
     const getAllScheduledEpochsFilter =
       epochManagerContract.filters.EpochScheduled(null);
@@ -49,6 +53,8 @@ export default function EpochListings({
           allEpochAdmins.map((epochAdmin) => fetchEpoch(epochAdmin))
         );
 
+        setIsLoading(false);
+
         // For each Epoch, determine if relevant to the connected wallet
         // or not - if wallet is either admin or user.
         allEpochDetails.filter((epochDetails) => {
@@ -66,20 +72,41 @@ export default function EpochListings({
       });
   }, []); // HACK to avoid infinite loop
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <Container>
-      <Container>
-        <h1>Epoch Listings</h1>
-      </Container>
-      <Container>
-        {relevantEpochs.map((relevantEpoch, idx) => (
-          <EpochDetails
-            key={idx}
-            epoch={relevantEpoch}
-            connectedWalletAddress={connectedWalletAddress}
-          />
-        ))}
-      </Container>
+    <div>
+      {relevantEpochs.length > 0 ? (
+        <Container>
+          {relevantEpochs.map((relevantEpoch, idx) => (
+            <EpochDetails
+              key={idx}
+              epoch={relevantEpoch}
+              connectedWalletAddress={connectedWalletAddress}
+            />
+          ))}
+        </Container>
+      ) : (
+        <Empty />
+      )}
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <Container className={styles.loading}>
+      Fetching any Epochs relevant to you...
+    </Container>
+  );
+}
+
+function Empty() {
+  return (
+    <Container className={styles.empty}>
+      There are no Epochs relevant to you right now.
     </Container>
   );
 }
