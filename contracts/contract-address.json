@@ -3,9 +3,9 @@
     "EpochManager": "0x998abeb3E57409262aE5b751f60747921B33613E"
   },
   "harmonyDevnet": {
-    "EpochManager": "0x09635F643e140090A9A8Dcd712eD6285858ceBef"
+    "EpochManager": "0xC9a43158891282A2B1475592D5719c001986Aaec"
   },
   "rinkeby": {
-    "EpochManager": "0xf725F5131F846e3DbbCD15aC4975A88912cb2911"
+    "EpochManager": "0xdC450985369D8Cf6D6877aEb9a0a56a28eBAB164"
   }
 }
