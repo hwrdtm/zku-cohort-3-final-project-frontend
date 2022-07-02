@@ -8,20 +8,6 @@ import EpochDetails from "components/EpochDetails";
 import { isAddressAdminOfEpoch, isAddressMemberOfEpoch } from "utils/epoch";
 import config, { getContractAddress } from "config";
 
-// As admin, view my created Epoch (if exist).
-// It can either be:
-//  - yet to start
-//  - already started
-//  - finished
-//  - finalized
-
-// As user, view Epochs I am part of.
-// It can either be:
-//  - yet to start
-//  - already started
-//  - finished
-//  - finalized
-
 export default function EpochListings({
   connectedWalletAddress,
 }: {
@@ -37,24 +23,47 @@ export default function EpochListings({
       provider
     );
 
-    epochManagerContract.on("EpochScheduled", async (addressOfEpochAdmin) => {
-      console.log("New Epoch Scheduled By Admin", { addressOfEpochAdmin });
+    const getAllScheduledEpochsFilter =
+      epochManagerContract.filters.EpochScheduled(null);
 
-      // fetch epoch details
-      const epochDetails = await fetchEpoch(addressOfEpochAdmin);
+    epochManagerContract
+      .queryFilter(getAllScheduledEpochsFilter)
+      .then(async (epochScheduledEvents) => {
+        // Determine all epoch admins who ever scheduled an Epoch.
+        const allEpochAdmins: string[] = epochScheduledEvents
+          .map((event) => {
+            if (event.args) {
+              return event.args[0];
+            }
+            return "";
+          })
+          // de-dupe
+          .reduce((prev, curr) => {
+            if (prev.indexOf(curr) === -1) {
+              return [...prev, curr];
+            }
+          }, []);
 
-      if (!epochDetails) {
-        return;
-      }
+        // For all these unique Epoch admins, get their latest Epoch status.
+        const allEpochDetails = await Promise.all(
+          allEpochAdmins.map((epochAdmin) => fetchEpoch(epochAdmin))
+        );
 
-      // if connected wallet is either admin or user, add to list to display
-      if (
-        isAddressAdminOfEpoch(connectedWalletAddress, epochDetails) ||
-        isAddressMemberOfEpoch(connectedWalletAddress, epochDetails)
-      ) {
-        setRelevantEpochs([...relevantEpochs, epochDetails]);
-      }
-    });
+        // For each Epoch, determine if relevant to the connected wallet
+        // or not - if wallet is either admin or user.
+        allEpochDetails.filter((epochDetails) => {
+          if (!epochDetails) {
+            return;
+          }
+
+          if (
+            isAddressAdminOfEpoch(connectedWalletAddress, epochDetails) ||
+            isAddressMemberOfEpoch(connectedWalletAddress, epochDetails)
+          ) {
+            setRelevantEpochs([...relevantEpochs, epochDetails]);
+          }
+        });
+      });
   }, []); // HACK to avoid infinite loop
 
   return (
