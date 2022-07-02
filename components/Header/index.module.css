@@ -1,0 +1,12 @@
+.container {
+    padding: 24px 24px 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    box-shadow: 0px 0px 5px rgb(120, 127, 117);
+}
+
+.title {
+    font-size: 36px;
+}

@@ -1,26 +1,16 @@
 import React, { useState } from "react";
 import detectEthereumProvider from "@metamask/detect-provider";
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { providers } from "ethers";
 import EpochListings from "../components/EpochListings";
 import AdminFunctions from "../components/AdminFunctions";
+import Header from "../components/Header";
 
 function LoggedInComponent(connectedWalletAddress: string) {
   return (
     <Container>
-      <h1>Anonymous Coordinape</h1>
-      <h3>Connected wallet: {connectedWalletAddress}</h3>
       <AdminFunctions connectedWalletAddress={connectedWalletAddress} />
       <EpochListings connectedWalletAddress={connectedWalletAddress} />
-    </Container>
-  );
-}
-
-function LoggedOutComponent(onClick: () => {}) {
-  return (
-    <Container>
-      <h1>Anonymous Coordinape</h1>
-      <Button onClick={onClick}>Connect MetaMask</Button>
     </Container>
   );
 }
@@ -43,10 +33,14 @@ export default function Home() {
 
   const PageComponent = !!connectedWalletAddress
     ? () => LoggedInComponent(connectedWalletAddress)
-    : () => LoggedOutComponent(handleConnectWallet);
+    : () => null;
 
   return (
     <div>
+      <Header
+        connectedWalletAddress={connectedWalletAddress}
+        onClick={handleConnectWallet}
+      />
       <PageComponent />
     </div>
   );
