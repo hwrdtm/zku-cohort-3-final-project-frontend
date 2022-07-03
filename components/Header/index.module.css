@@ -5,6 +5,7 @@
     justify-content: space-between;
     align-items: flex-end;
     box-shadow: 0px 0px 5px rgb(120, 127, 117);
+    background-color: rgb(231, 255, 222);
 }
 
 .title {

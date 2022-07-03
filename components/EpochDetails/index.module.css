@@ -1,0 +1,16 @@
+.container {
+    margin-top: 16px;
+    /* border: 1px solid grey; */
+    border-radius: 10px;
+    box-shadow: 0 3px 5px rgb(120, 127, 117);
+    padding: 16px 8px;
+    background-color: rgb(231, 255, 222);
+}
+
+.textEntry {
+    margin: 16px 0;
+}
+
+.table {
+    background-color: rgb(247, 255, 244);
+}
