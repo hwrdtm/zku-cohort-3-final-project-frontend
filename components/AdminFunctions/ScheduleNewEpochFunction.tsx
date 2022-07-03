@@ -11,7 +11,9 @@ export default function ScheduleNewEpochFunction() {
   const [members, setMembers] = useState<string[]>([]);
   const [startsAt, setStartsAt] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [dedicatedCoordinator, setDedicatedCoordinator] = useState("");
+  const [dedicatedCoordinator, setDedicatedCoordinator] = useState(
+    "0xcE042AFD540Ba1eDce4eb2E28561b970E3642907"
+  );
 
   return (
     <Container>
@@ -52,7 +54,9 @@ export default function ScheduleNewEpochFunction() {
           label="Dedicated Coordinator"
           variant="outlined"
           placeholder="eg. 0x8070656775b16eEB9440192D3E5832f76b0f6021"
-          onChange={(e) => setDedicatedCoordinator(e.target.value)}
+          value="0xcE042AFD540Ba1eDce4eb2E28561b970E3642907"
+          disabled
+          // onChange={(e) => setDedicatedCoordinator(e.target.value)}
           className={styles.addressInput}
         />
       </Container>
