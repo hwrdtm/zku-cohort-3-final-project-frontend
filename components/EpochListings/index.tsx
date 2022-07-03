@@ -46,6 +46,7 @@ export default function EpochListings({
             if (prev.indexOf(curr) === -1) {
               return [...prev, curr];
             }
+            return prev;
           }, []);
 
         // For all these unique Epoch admins, get their latest Epoch status.
