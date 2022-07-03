@@ -10,6 +10,8 @@ export const getBlockchainCurrency = () => {
     return "ETH";
   } else if (config[configEnvKey] === "staging") {
     return "ETH";
+  } else if (config[configEnvKey] === "production") {
+    return "ETH";
   }
   return "ONE";
 };
