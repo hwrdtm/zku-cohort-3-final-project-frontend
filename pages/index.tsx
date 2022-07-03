@@ -15,13 +15,13 @@ function LoggedInComponent(connectedWalletAddress: string) {
         value={selectedTab}
         onChange={(_, newValue) => setSelectedTab(newValue)}
       >
-        <Tab label="Admin View" />
         <Tab label="Member View" />
+        <Tab label="Admin View" />
       </Tabs>
       {selectedTab === 0 ? (
-        <AdminFunctions connectedWalletAddress={connectedWalletAddress} />
-      ) : (
         <EpochListings connectedWalletAddress={connectedWalletAddress} />
+      ) : (
+        <AdminFunctions connectedWalletAddress={connectedWalletAddress} />
       )}
     </Container>
   );
