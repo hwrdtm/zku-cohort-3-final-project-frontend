@@ -39,7 +39,7 @@ export async function submitTokenAllocationCommitmentProof(
       solidityProofInput,
     }),
     gasLimit: utils.hexlify(1000000),
-    gasPrice: utils.hexlify(10000000000),
+    gasPrice: utils.hexlify(40000000000),
   };
 
   console.log("sending submitTokenAllocationCommitmentProof TX", { tx });

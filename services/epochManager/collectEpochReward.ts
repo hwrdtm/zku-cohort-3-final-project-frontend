@@ -31,7 +31,7 @@ export async function collectEpochReward(params: CollectRewardParams) {
     nonce,
     data: getCollectEpochRewardSolidityData(params),
     gasLimit: utils.hexlify(1000000),
-    gasPrice: utils.hexlify(10000000000),
+    gasPrice: utils.hexlify(40000000000),
   };
 
   console.log("sending collectEpochReward TX", { tx });

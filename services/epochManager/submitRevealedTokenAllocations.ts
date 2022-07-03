@@ -30,7 +30,7 @@ export async function submitRevealedTokenAllocations(
       finalTokenAllocations,
     }),
     gasLimit: utils.hexlify(1000000),
-    gasPrice: utils.hexlify(10000000000),
+    gasPrice: utils.hexlify(40000000000),
   };
 
   console.log("sending submitRevealedTokenAllocations TX", { tx });

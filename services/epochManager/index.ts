@@ -119,7 +119,7 @@ export async function scheduleNewEpoch(newEpochParams: NewEpochParams) {
     ),
     data: getScheduleNewEpochSolidityData(newEpochParams),
     gasLimit: utils.hexlify(1000000),
-    gasPrice: utils.hexlify(10000000000),
+    gasPrice: utils.hexlify(40000000000),
   };
 
   console.log("sending scheduleNewEpoch TX", { tx });
@@ -205,7 +205,7 @@ export async function updateTokenAllocations(
       commitmentHash: tokenAllocationCommitmentHash,
     }),
     gasLimit: utils.hexlify(1000000),
-    gasPrice: utils.hexlify(10000000000),
+    gasPrice: utils.hexlify(40000000000),
   };
 
   console.log("sending updateTokenAllocationCommitment TX", { tx });
