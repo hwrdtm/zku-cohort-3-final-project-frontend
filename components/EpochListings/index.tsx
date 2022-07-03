@@ -58,18 +58,20 @@ export default function EpochListings({
 
         // For each Epoch, determine if relevant to the connected wallet
         // or not - if wallet is either admin or user.
-        allEpochDetails.filter((epochDetails) => {
+        const filteredEpochs = allEpochDetails.filter((epochDetails) => {
           if (!epochDetails) {
             return;
           }
 
-          if (
+          return (
             isAddressAdminOfEpoch(connectedWalletAddress, epochDetails) ||
             isAddressMemberOfEpoch(connectedWalletAddress, epochDetails)
-          ) {
-            setRelevantEpochs([...relevantEpochs, epochDetails]);
-          }
+          );
         });
+
+        if (filteredEpochs.length > 0) {
+          setRelevantEpochs(filteredEpochs);
+        }
       });
   }, []); // HACK to avoid infinite loop
 
