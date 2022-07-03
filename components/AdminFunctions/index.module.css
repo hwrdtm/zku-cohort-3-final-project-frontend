@@ -1,7 +1,5 @@
-.addressInput {
-    width: 100%;
-}
-
+.addressInput,
 .input {
     width: 100%;
+    margin-top: 16px;
 }
