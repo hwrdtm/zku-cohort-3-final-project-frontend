@@ -24,6 +24,8 @@ export const getContractAddress = () => {
       return contractAddress.local.EpochManager;
     } else if (config.environment === "staging") {
       return contractAddress.rinkeby.EpochManager;
+    } else if (config.environment === "production") {
+      return contractAddress.mainnet.EpochManager;
     }
     return contractAddress.harmonyDevnet.EpochManager;
   } else {
@@ -32,6 +34,8 @@ export const getContractAddress = () => {
       return contractAddress.local.EpochManager;
     } else if (config.browserEnvironment === "staging") {
       return contractAddress.rinkeby.EpochManager;
+    } else if (config.browserEnvironment === "production") {
+      return contractAddress.mainnet.EpochManager;
     }
     return contractAddress.harmonyDevnet.EpochManager;
   }
