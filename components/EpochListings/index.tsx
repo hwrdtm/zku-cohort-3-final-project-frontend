@@ -58,7 +58,7 @@ export default function EpochListings({
 
         // For each Epoch, determine if relevant to the connected wallet
         // or not - if wallet is either admin or user.
-        const filteredEpochs = allEpochDetails.filter((epochDetails) => {
+        const filteredEpochs: any = allEpochDetails.filter((epochDetails) => {
           if (!epochDetails) {
             return;
           }

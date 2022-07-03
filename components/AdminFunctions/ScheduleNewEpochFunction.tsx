@@ -11,7 +11,7 @@ export default function ScheduleNewEpochFunction() {
   const [members, setMembers] = useState<string[]>([]);
   const [startsAt, setStartsAt] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [dedicatedCoordinator, setDedicatedCoordinator] = useState(
+  const [dedicatedCoordinator] = useState(
     "0xcE042AFD540Ba1eDce4eb2E28561b970E3642907"
   );
 

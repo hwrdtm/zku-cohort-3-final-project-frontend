@@ -1,12 +1,8 @@
-import { Button, Container, TextField } from "@mui/material";
+import { Container, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Epoch } from "../../models";
 import EpochDetails from "../EpochDetails";
-import {
-  fetchEpoch,
-  scheduleNewEpoch,
-  collectEpochReward,
-} from "../../services/epochManager";
+import { fetchEpoch } from "../../services/epochManager";
 import ValidatingButton from "../ValidatingButton";
 import { validateAddressInput } from "../../utils/validation";
 import styles from "./index.module.css";
