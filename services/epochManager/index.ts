@@ -147,11 +147,17 @@ function padTokenAllocations(privateTokenAllocations: number[]) {
   return paddedArr;
 }
 
+interface UpdateTokenAllocationsHooks {
+  postCommitmentHook: () => void;
+  preSubmitProofHook: () => void;
+}
+
 export async function updateTokenAllocations(
   addressOfEpochAdmin: string,
   allocatingMemberIdx: number,
   numMembers: number,
-  privateTokenAllocations: number[]
+  privateTokenAllocations: number[],
+  hooks: UpdateTokenAllocationsHooks
 ) {
   const provider = (await detectEthereumProvider()) as any;
   const ethersProvider = new providers.Web3Provider(provider);
@@ -208,6 +214,8 @@ export async function updateTokenAllocations(
     const userCommitmentTxResponse = await signer.sendTransaction(tx);
     console.log("tx submitted", { userCommitmentTxResponse });
 
+    hooks.postCommitmentHook();
+
     // wait until tx is confirmed
     if (config.browserEnvironment !== "local") {
       console.log("waiting until tx is confirmed");
@@ -219,6 +227,8 @@ export async function updateTokenAllocations(
   } catch (error: any) {
     console.error("unable to update token allocation commitment", { error });
   }
+
+  hooks.preSubmitProofHook();
 
   // 6. POST to API for verification with proof - (salt, tokenAllocations, addressOfEpochAdmin, signature)
   await fetch("/api/token-allocations", {

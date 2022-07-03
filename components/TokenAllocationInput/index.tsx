@@ -29,6 +29,8 @@ export default function TokenAllocationInput({
   const allocatingMemberIdx = epoch.members.indexOf(
     connectedWalletAddress || ""
   );
+  const [updateAllocationLoadingMsg, setUpdateAllocationLoadingMsg] =
+    useState("");
 
   return (
     <Container>
@@ -81,17 +83,35 @@ export default function TokenAllocationInput({
           onButtonValidate={() =>
             validateTokenAllocationsInput(tokenAllocations)
           }
-          onButtonSubmit={() =>
-            updateTokenAllocations(
+          onButtonSubmit={async () => {
+            // set loading
+            setUpdateAllocationLoadingMsg(
+              "Submitting token allocation commitment..."
+            );
+
+            await updateTokenAllocations(
               epoch.adminAddress,
               allocatingMemberIdx,
               epoch.members.length,
-              tokenAllocations
-            )
-          }
+              tokenAllocations,
+              {
+                postCommitmentHook: () =>
+                  setUpdateAllocationLoadingMsg(
+                    "Waiting for enough blocks to pass to confirm commitment..."
+                  ),
+                preSubmitProofHook: () =>
+                  setUpdateAllocationLoadingMsg(
+                    "Commitment confirmed, coordinator is submitting proof. Refresh page for updates on commitment verification status."
+                  ),
+              }
+            );
+          }}
         >
           Update
         </ValidatingButton>
+        {updateAllocationLoadingMsg.length > 0 && (
+          <div>{updateAllocationLoadingMsg}</div>
+        )}
       </Container>
     </Container>
   );
