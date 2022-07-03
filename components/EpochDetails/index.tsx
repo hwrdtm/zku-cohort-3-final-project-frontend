@@ -13,6 +13,7 @@ import {
   getEpochState,
   isAddressAdminOfEpoch,
   isAddressMemberOfEpoch,
+  isEpochFinalized,
 } from "../../utils/epoch";
 import TokenAllocationInput from "../TokenAllocationInput";
 import EpochState from "../EpochState";
@@ -90,31 +91,45 @@ export default function EpochDetails({
               </TableRow>
             </TableHead>
             <TableBody>
-              {epoch.members.map((memberAddress, idx) => (
-                <TableRow
-                  key={idx}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {memberAddress}{" "}
-                    {!!connectedWalletAddress &&
-                    connectedWalletAddress === memberAddress
-                      ? "(you)"
-                      : ""}
-                  </TableCell>
-                  <TableCell>
-                    {shortenedWithEllipses(
-                      epoch.tokenAllocationCommitments[idx]
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {epoch.tokenAllocationCommitmentsVerified[idx].toString()}
-                  </TableCell>
-                  <TableCell>
-                    {epoch.revealedTokenAllocations[idx].toString()}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {epoch.members.map((memberAddress, idx) => {
+                const allocatedRewardToMemberInEthers = utils
+                  .formatUnits(
+                    epoch.rewardBudgetPerToken.mul(
+                      epoch.revealedTokenAllocations[idx]
+                    ),
+                    "ether"
+                  )
+                  .toString()
+                  .slice(0, 4);
+
+                return (
+                  <TableRow
+                    key={idx}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {memberAddress}{" "}
+                      {!!connectedWalletAddress &&
+                      connectedWalletAddress === memberAddress
+                        ? "(you)"
+                        : ""}
+                    </TableCell>
+                    <TableCell>
+                      {shortenedWithEllipses(
+                        epoch.tokenAllocationCommitments[idx]
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {epoch.tokenAllocationCommitmentsVerified[idx].toString()}
+                    </TableCell>
+                    <TableCell>
+                      {epoch.revealedTokenAllocations[idx].toString()}
+                      {isEpochFinalized(epoch) &&
+                        ` (${allocatedRewardToMemberInEthers} ${getBlockchainCurrency()})`}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
