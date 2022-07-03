@@ -5,6 +5,7 @@ export interface Epoch {
 
   // on-chain properties
   rewardBudget: BigNumber;
+  rewardBudgetPerToken: BigNumber;
   members: string[];
   tokenAllocationCommitments: any[];
   tokenAllocationCommitmentsVerified: boolean[];

@@ -3,10 +3,12 @@ import { Container, TextField } from "@mui/material";
 import { Epoch } from "../../models";
 import {
   CIRCUIT_TOKEN_ALLOCATION_INPUT_LENGTH,
+  getBlockchainCurrency,
   MAX_TOKENS_TO_ALLOCATE,
 } from "../../constants";
 import { updateTokenAllocations } from "services/epochManager";
 import ValidatingButton from "components/ValidatingButton";
+import { utils } from "ethers";
 
 function getDefaultTokenAllocations(numberOfEpochMembersToAllocateTo: number) {
   return Array.apply(null, Array(numberOfEpochMembersToAllocateTo)).map(
@@ -41,9 +43,19 @@ export default function TokenAllocationInput({
         // do not render anything for the connected wallet address
         if (idx === allocatingMemberIdx) return null;
 
+        const allocatedRewardToMemberInEthers = utils
+          .formatUnits(
+            epoch.rewardBudgetPerToken.mul(tokenAllocations[idx]),
+            "ether"
+          )
+          .toString();
+
         return (
           <Container key={idx}>
-            <h5>Allocation for Member: {epochMemberAddress}</h5>
+            <h5>
+              Allocation for Member: {epochMemberAddress} (
+              {`${allocatedRewardToMemberInEthers} ${getBlockchainCurrency()}`})
+            </h5>
             <TextField
               label={epochMemberAddress}
               type="number"
